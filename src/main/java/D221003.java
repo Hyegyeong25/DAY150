@@ -5,7 +5,6 @@ public class D221003 {
         Scanner scan = new Scanner(System.in);
 
         int t = scan.nextInt(); //test count
-        String[] res = new String[t];
         for (int i = 0; i < t; i++) {
             int h = scan.nextInt();
             int w = scan.nextInt();
