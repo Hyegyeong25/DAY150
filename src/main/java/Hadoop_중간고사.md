@@ -36,7 +36,7 @@ yum install -y net-tools
 ---
 6. 현재 열린 포트를 확인하기 위한 명령어는 무엇인가?
 ```java
-firewall-cmd --list-all
+netstat -ntlp | grep java
 ```
 
 7. CentOS 7의 8088번 포트의 외부 접속을 혀용하기 위한 방화벽 설정, 방화벽 재부팅, 방화벽 내용 확인 명령어를 작성하시오.
@@ -59,7 +59,7 @@ chmod 0600 ~/.ssh/authorized_keys
 10. 설치한 자바의 환경 설정하는 파일은 무엇이며, 설정 후 적용하기 위한 명령어는 무엇인가?
 
 ```java
- - 환경 설정 파일 : vi /etc/profile
+ - 환경 설정 파일 : /etc/profile
  - 적용 명령어 : source /etc/profile
 ```
 ---
@@ -69,6 +69,8 @@ chmod 0600 ~/.ssh/authorized_keys
  - 생성할 링크 위치 : /usr/local
  - 링크명 : java
  - 대상 폴더명 : /usr/local/jdk1.8
+        
+ln -s jdk1.8/ /usr/local/java
 ```
 
 12. jdk1.8.tar.gz 파일의 압축을 해제하는 명령어를 작성하시오.  
@@ -90,7 +92,7 @@ hdfs namenode -format
 15. 하둡의 환경 설정 관련 파일들이 존재하는 폴더는 무엇인가?
 ```java
  - 하둡 설치 경로 : /usr/local/hadoop/
-        etc
+        /etc/hadoop
 ``` 
 
 ---
@@ -125,7 +127,7 @@ shift + g
 
 
 ---
-21. 하둡 마스터 서버에 네임노드와 데이터노드의 역할을 부여했다고 가정했을 때, 하둡이 샐행될 때 실행되는 데몬을 모두 작성하시오.
+21. 하둡 마스터 서버에 네임노드와 데이터노드의 역할을 부여했다고 가정했을 때, 하둡이 실행될 때 실행되는 데몬을 모두 작성하시오.
 ```java
 jps
 NameNode

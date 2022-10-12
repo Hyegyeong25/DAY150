@@ -12,7 +12,7 @@
 
 1. 스프링 프레임워크의 동작 순서대로 작성하시오.
 ```java
-        URL요청 ->( Controller ) -> ( Service ) -> ( Mapper ) -> ( database ) -> ( JSP )
+        URL요청 -> ( Controller ) -> ( Service ) -> ( Mapper )
 ```
 
 
@@ -22,8 +22,19 @@
         1. IoC (Invertion of Control: 제어 역행)
         2. DI(Dependency Injection: 의존성 주입)
         3. AOP(Aspect-Oriented Programming: 관점 지향 프로그래밍)
+        또는
+        1. 경량 컨테이너
+        (객체 생성, 소멸과 같은 생명주기 관리)
+        2. 제어의 역행 지원
+        (함수나 객체의 호출 제어권이 스프링 프레임워크에서 제어 가능)
+        3. 의존성 주입 지원
+        (각각의 계층이나 서비스 간에 의존성이 존재할 경우,프레임워크가 서로 연결)
+        4. AOP지원
+        (여러 모듈에서 공통적으로 사용되는 기능을 분리하여 관리가능)
         
         - 스프링 부트 프레임워크 특징 :
+        스프링 부트 프레임워크 특징 : 마이크로 서비스 아키텍처(MSA) 구현에 최적화
+        단일 스프링 어플리케이션 생성, 톰켓과 Jetty 웹서버(WAS)를 프로젝트에 포함
         스프링 프레임워크를 사용하기 위한 설정의 많은 부분을 자동화
         
         - 차이점 :
@@ -34,14 +45,14 @@
         하지만 starter가 대부분의 dependency를 관리해주기 때문에 번거로움이 적어졌다.
         3 - XML 설정을 하지 않아도 된다.
         4 - jar file을 이용해 자바 옵션만으로 손쉽게 배포가 가능하다.
-
-출처 : https://rma7.tistory.com/77
 ```
 
 3. @Controller 어노테이션에 대해 자세히 설명하시오.
 ```java
 Spring 프레임워크에서 Controller인지 인식 가능하게 하며
-view(화면)로 return하는 것이 주 목적이다.
+Service를 실행하고, 그 Service로부터 받은 결과를 JSP에 전달
+view로 return하는 것이 주 목적이다. JSP 문법이 사용가능.
+
 
 /** 3장 27p
 Controller와 Service 등 다른 자바파일들과의 차이점
@@ -52,7 +63,11 @@ Controller와 Service 등 다른 자바파일들과의 차이점
 
 4. @Service 어노테이션에 대해 자세히 설명하시오.
 ```java
-Service Class에서 쓰이며 비즈니스 로직을 수행하는 Class라는 것을 나타내는 용도이다.
+Controller로부터 전달받은 정보(DTO, 회원정보 등)를 가지고 프로그래밍 처리,
+데이터베이스로부터 값을 Insert, Update, Delete, Select할 경우,
+데이터베이스(오라클)와 연동하는 Mapper들을 호출(데이터베이스를 사용할 필요가 없으면 호출X, 대부분 로직 특성상 데이터베이스 호출)
+여러 개의 Mapper들을 Service의 한 개의 함수에서 호출할 수 있음
+중요 로직처리는 다 Service에서 사용함
 
 /** 3장 33p
  Service는 Controller에서 자신을 찾을 수 있도록 반드시 자신의 이름을 기입함
@@ -63,18 +78,19 @@ Service Class에서 쓰이며 비즈니스 로직을 수행하는 Class라는 �
 5. @Mapper 어노테이션에 대해 자세히 설명하시오.
 ```java
 Interface를 매퍼로 등록하기 위해 @Mapper 어노테이션을 사용
-
+데이터베이스(오라클, MySQL, MariaDB)로부터 전달받은 결과 값을 자바 객체로 변환시킴, 
+자동 변환을 위해 반드시 DTO(Data Transfer Object)를 사용함
+DTO를 사용하지 않아도 되지만, 코드가 훨씬 간결해지고 편리함
 ```
 
 6. SQL 언어를 XML 파일에 작성하여, 소프트웨어의 유지보수를 쉽게 하기 개발된 오픈소스 프레임워크는 무엇인가?
 ```java
-Mybatis
+myBatis
 ```
 
 7. Lombok 외부 라이브러리에 대해 자세히 설명하시오.
 ```java
-Lombok 프레임워크
-- 스프링 프레임워크에 적용 가능한 프레임워크
+스프링 프레임워크에 적용 가능한 프레임워크
 자주 사용되는 자바 코드 작성을 쉽게 작성하기 위해
 어노테이션(@)으로 코드를 작성함
 ```
@@ -82,7 +98,8 @@ Lombok 프레임워크
 8. JDBC에 대해 자세히 설명하시오.
 ```java
 Java DataBase Connecivity
-자바 프로그램 안에서 SQL을 실행하기 위해 데이터베이스를 연결해주는 기능
+자바 프로그램 안에서 SQL을 실행하기 위해 데이터베이스를 연결해주는 프로그래밍 인터페이스.
+응용 프로그램과 DBMS간의 통신을 중간에서 번역해주는 역할을 함.
 ```
 
 9. DTO에 다음과 같이 정의된 변수에 @Setter 어노테이션을 작성하면, 어떤 함수가 자동으로 생성되는가?
@@ -111,6 +128,9 @@ Java DataBase Connecivity
 ```java
 @Autowired와 마찬가지로 Bean 객체를 주입함
 Resource는 이름으로 연결해줌
+
+메모리에 싱글톤 방식으로 올림
+@Resource(name="NoticeService")는 Service 자바 파일 중 스프링 문법으로 선언된 NoticeService 찾아서 연결함
 
 ```
 
@@ -153,10 +173,14 @@ SMTP(Simple Mail Transfer Protocol)
 18. @GetMapping, @PostMapping, @RequestMapping 어노테이션에 대해 자세히 설명하시오.
 ```java
  - @GetMapping :
+        주소에 파라미터가 노출 됨
  RequestMapping의 축약형, @RequestMapping(value = "/test7", method = {RequestMethod.GET})
  - @PostMapping :
+        주소에 파라미터가 노출 안됨
  RequestMapping의 축약형, @RequestMapping(value = "/test7", method = {RequestMethod.POST})
  - @RequestMapping :
+        함수 & 클래스 위에 사용 가능
+        클래스 위에 쓰면 하나의 컨트롤러에 공통된 주소 붙일 수 있음 
  - URL 을 컨트롤러의 메서드와 매핑할 때 사용하는 어노테이션
  - 요청 주소(url) 설정, 요청 방식(GET, POST, DELETE, PATCH) 설정
  - 요청방식들을 동시에 설정 가능
